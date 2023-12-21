@@ -27,6 +27,12 @@ formats::json::Value user_login::HandleRequestJsonThrow(
   auto password = user["password"].As<std::string>();
   auto hash_password = userver::crypto::hash::Sha256(password);
   auto res = pg_cluster_->Execute(storages::postgres::ClusterHostType::kSlave,
+                                  kSelectUserByEmail, email);
+  if (res.IsEmpty()) {
+    request.SetResponseStatus(userver::server::http::HttpStatus::kNotFound);
+    return {};
+  }
+  res = pg_cluster_->Execute(storages::postgres::ClusterHostType::kSlave,
                                   kSelectLoginUser, email, hash_password);
   if (res.IsEmpty()) {
     request.SetResponseStatus(userver::server::http::HttpStatus::kNotFound);
