@@ -1,0 +1,10 @@
+//
+// Created by andrey on 19.12.23.
+//
+
+#ifndef USERVERAPP_ORGANIZATION_GET_WORKSTATIONS_HPP
+#define USERVERAPP_ORGANIZATION_GET_WORKSTATIONS_HPP
+
+class organization_get_workstations {};
+
+#endif  // USERVERAPP_ORGANIZATION_GET_WORKSTATIONS_HPP
