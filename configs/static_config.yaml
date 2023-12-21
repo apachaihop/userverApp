@@ -54,12 +54,116 @@ components_manager:
             path: /v1/hello               # Registering handler by URL '/v1/hello'.
             method: POST                  # It will only reply to POST requests.
             task_processor: main-task-processor  # Run it on CPU bound task processor
-
+        fs-cache-main:
+          dir: ../public      # Path to the directory with files
+          update-period: 10s        # update cache each N seconds
+          fs-task-processor: fs-task-processor  # Run it on blocking task processor
         postgres-db-1:
             dbconnection: $dbconnection
             blocking_task_processor: fs-task-processor
             dns_resolver: async
             sync-start: true
-
+        handler-static: # Finally! Static handler.
+          fs-cache-component: fs-cache-main
+          path: /*                  # Registering handlers '/*' find files.
+          method: GET              # Handle only GET requests.
+          task_processor: main-task-processor  # Run it on CPU bound task processor
+      # yaml
+        auth-pg-cache:
+          pgcomponent: postgres-db-1
+          update-interval: 10s
+          chunk-size: 0
+        handler-user:
+          path: /user             # Registering handler by URL '/v1/hello'.
+          method: POST,GET,DELETE                  # It will only reply to POST requests.
+          task_processor: main-task-processor  # Run it on CPU bound task processor
+        handler-user-login:
+          path: /user/login
+          method: POST
+          task_processor: main-task-processor
+        handler-user-register:
+          path: /user/register
+          method: POST
+          task_processor: main-task-processor
+        handler-user-update:
+          path: /user/update
+          method: PUT
+          task_processor: main-task-processor
+        handler-user-delete:
+          path: /user/delete
+          method: DELETE
+          task_processor: main-task-processor
+        handler-organization-delete:
+          path: /organization/delete
+          method: DELETE
+          task_processor: main-task-processor
+        handler-organization-update:
+          path: /organization/update
+          method: PUT
+          task_processor: main-task-processor
+        handler-organization-workers:
+          path: /organization/workers
+          method: GET
+          task_processor: main-task-processor
+        handler-worker-insert:
+          path: /worker/insert
+          method: POST
+          task_processor: main-task-processor
+        handler-worker-update:
+          path: /worker/update
+          method: PUT
+          task_processor: main-task-processor
+        handler-worker-get:
+          path: /worker/get
+          method: GET
+          task_processor: main-task-processor
+        handler-worker-delete:
+          path: /worker/delete
+          method: DELETE
+          task_processor: main-task-processor
+        handler-worker-get-workstations:
+          path: /worker/get-workstation
+          method: GET
+          task_processor: main-task-processor
+        handler-worker-get-traffic-usage:
+          path: /worker/get-traffic-usage
+          method: GET
+          task_processor: main-task-processor
+        handler-worker-get-service-traffic-usage:
+          path: /worker/get-service-traffic-usage
+          method: GET
+          task_processor: main-task-processor
+        handler-workstation-insert:
+          path: /workstation/insert
+          method: POST
+          task_processor: main-task-processor
+        handler-workstation-update:
+          path: /workstation/update
+          method: PUT
+          task_processor: main-task-processor
+        handler-workstation-delete:
+          path: /workstation/delete
+          method: DELETE
+          task_processor: main-task-processor
+        handler-workstation-get:
+          path: /workstation/get
+          method: GET
+          task_processor: main-task-processor
+        handler-service-insert:
+          path: /service/insert
+          method: POST
+          task_processor: main-task-processor
+        handler-service-update:
+          path: /service/update
+          method: PUT
+          task_processor: main-task-processor
+        handler-service-delete:
+          path: /service/delete
+          method: DELETE
+          task_processor: main-task-processor
+        handler-service-get:
+          path: /service/get
+          method: GET
+          task_processor: main-task-processor
         dns-client:
             fs-task-processor: fs-task-processor
